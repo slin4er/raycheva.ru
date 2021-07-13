@@ -1,0 +1,15 @@
+{{>style}}
+<body>
+    <form method="POST" action="/admin/patient/update/{{patient._id}}">
+      <label for="name">Имя</label>
+      <input type="text" name="name" id="name" value= "{{patient.name}}" />
+      <label for="email">Почта</label>
+      <input type="text" name="email" id="email" value="{{patient.email}}" />
+      <label for="phone">Телефон</label>
+      <input type="text" name="phone" id="phone" value="{{patient.phone}}" />
+      <label for="data">Запись</label>
+      <input  type="text" name="data" id="data" autocomplete="off" value="{{patient.data}}" />
+      <button>Редактировать</button>
+    </form>
+</body>
+</html>

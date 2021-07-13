@@ -1,0 +1,242 @@
+const Patient = require('../models/patients')
+const express = require('express')
+const router = express.Router()
+const {SendDataToPatient} = require('../emails/accounts')
+const Admin = require('../models/admin')
+const auth = require('../middleware/auth')
+const path = require('path')
+const { ObjectID } = require('bson')
+
+router.post('/admin/signup', async (req, res) => {
+    if(req.body.login === process.env.ADMIN_LOG && req.body.password === process.env.ADMIN_PASS){
+        try{
+            const admin = new Admin(req.body)
+            const token = await admin.generateAuthToken()
+            res.cookie('auth_token', token)
+            res.render('welcoming')
+        } catch(e){
+            res.status(400).send(e.message)
+        }
+    }else{
+        const unableLogin = true
+        res.render('register',{
+            unableLogin
+        })
+    }
+})
+
+router.post('/admin/login', async (req, res) => {
+    try{
+        const admin = await Admin.findByCredentials(req.body.login, req.body.password)
+        if(!admin){
+            return res.status(404).send('Не найдено!')
+        }
+        const token = await admin.generateAuthToken()
+        res.cookie('auth_token', token)
+        res.render('welcoming')
+    }catch (e) {
+        const unableLogin = true
+        res.render('index',{
+            unableLogin
+        })
+    }
+})
+
+router.get('/admin/logout', auth, async (req, res) => {
+    try{
+        req.admin.tokens = req.admin.tokens.filter((token) => token.token !== req.token)
+        await req.admin.save()
+        res.render('error', {
+            error: 'Вы успешно вышли из сети!'
+        })
+    }catch (e) {
+        res.render('error', {
+            error: e.message
+        })
+    }
+})
+
+router.get('/admin/patients/:page', auth, async (req, res) => {
+    try{
+        const mySort = {data: 1}
+        const perPage = 10
+        const page = parseInt(req.params.page) || 1
+        const count = await Patient.countDocuments({})
+        let noPagesPrev = true
+        if(page <= 1){
+            noPagesPrev = false
+        }
+        let noPagesNext = true
+        if(page === (parseInt(count/perPage)) + 1){
+            noPagesNext = false
+        }
+        const skip = ((perPage * page) -perPage)
+        const patients = await Patient.find({}).sort(mySort).skip(skip).limit(perPage)
+        res.render('patients',{
+            patients,
+            currentPage: page,
+            pages: Math.ceil(count / perPage),
+            nextPage: parseInt(req.params.page) + 1,
+            prevPage: parseInt(req.params.page) - 1,
+            noPagesPrev,
+            noPagesNext
+        })
+    } catch (e) {
+        res.status(400).send(e.message)
+    }
+})
+
+router.get('/login', (req, res) => {
+    res.render('index')
+})
+
+router.get('/register', (req, res) => {
+    res.render('register')
+})
+
+router.get('/admin/patient', auth, async(req, res) => {
+    try{
+        const mySort = {data: 1}
+        const patient = await Patient.find({name: req.query.name}).sort(mySort)
+        if(patient.length === 0){
+            const noPatients = true
+            return res.render('patient', {
+                noPatients
+            })
+        }
+        res.render('patient',{
+            patient
+        })
+    } catch (e) {
+        res.status(500).send(e.message)
+    }
+})
+
+router.get('/admin/patient/date', auth, async (req, res) => {
+    const patients = await Patient.find({})
+    const neededPatients = []
+    let noPatients = false
+    await patients.forEach(element => {
+        if(element.data.includes(req.query.data)){
+            neededPatients.push(element)
+        }
+    });
+    if(neededPatients.length === 0){
+        noPatients = true
+    }
+    await neededPatients.sort()
+    res.render('patient', {
+        neededPatients,
+        noPatients
+    })
+})
+
+router.get('/admin/edit/:id', auth, async (req, res) => {
+    try{
+        const patient = await Patient.findById(req.params.id)
+        res.render('edit',{
+            patient
+        })
+    }catch (e) {
+        res.status(500).send(e.message)
+    }
+})
+
+router.get('/admin/find/patient', (req, res) => {
+    res.render('patient')
+})
+
+router.post('/admin/patient/update/:id', auth, async (req, res) => {
+    try{
+        const patient = await Patient.findById(req.params.id)
+        await patient.updateOne(req.body)
+        res.redirect('/admin/patients/1')
+    }catch(e) {
+        res.status(500).send(e.message)
+    }
+})
+
+router.get('/admin/patient/delete/:id', auth, async (req, res) => {
+    try{
+        const patient = await Patient.findById(req.params.id)
+        if(!patient){
+            return res.status(404).send('Пациент не найден!')
+        }
+        await patient.remove()
+        res.redirect(req.get('referer'))
+        //res.redirect('/admin/patients')
+    }catch (e) {
+        res.status(500).send(e.message)
+    }
+})
+
+router.get('/', (req, res) => {
+    res.render('index.html')
+})
+
+router.post('/registration', async (req, res) => {
+    try{
+        const patientExists = await Patient.findOne({data: req.body.data})
+        if(patientExists){
+            throw new Error('Такая запись уже сущусвует')
+        }
+        const patient = await new Patient(req.body)
+        await patient.save()
+        //SendDataToPatient(patient.email, patient.name, patient.data)
+        res.render('appointment',{
+            patient
+        })
+    } catch (e) {
+        res.render('error', {
+            error: e.message
+        })
+    }
+})
+
+router.get('/dates/check', async (req, res) => {
+    try{
+        if(!req.query.data){
+            throw new Error('Вы не указали дату,которую хотели бы проверить!')
+        }
+        const patients = await Patient.find({})
+        let availableHours = ['09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00']
+        const busyDate = []
+        await patients.forEach(element => {
+            if(element.data.includes(req.query.data)){
+                busyDate.push(element.data.slice(-5))
+            }
+        });
+        busyDate.sort()
+
+        await busyDate.forEach(element => {
+            availableHours = availableHours.filter((hour) => hour !== element)
+        })
+
+        let empty = false
+        let full = false
+        if(availableHours.length === 0) {
+            full = true
+        }
+        if(availableHours.length === 17){
+            empty = true
+        }
+        if(patients){
+            res.render('availableDate',{
+                empty,
+                full,
+                patients: availableHours
+            })
+        }
+    }catch (e) {
+        res.render('error', {
+            error: e.message
+        })
+    }
+})
+router.get('/*', (req, res) => {
+    res.render('error', {
+        error: 'Такой страницы не существует'
+    })
+})
+
+module.exports = router

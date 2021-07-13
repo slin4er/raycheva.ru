@@ -1,0 +1,45 @@
+{{>style}}
+<body>
+    <a href="/admin/patients/1">Все пациенты</a>
+    <a href="/admin/logout">Выйти</a>
+    <form method="GET" action="/admin/patient">
+      <label for="name">Найти по имени</label>
+      <input type="text" name="name" id="name"/>
+      <button>Найти</button>
+    </form>
+    </br>
+    <form method="GET" action="/admin/patient/date">
+      <label for="name">Найти по дате</label>
+      <input type="text" name="data" id="data"/>
+      <button>Найти</button>
+    </form>
+    </br>
+    {{#if patient}}
+    <ul class='list-group'>
+        {{#each patient}}
+        <li>Имя: {{this.name}}</li>
+        <li>Почта: {{this.email}}</li>
+        <li>Телефон: {{this.phone}}</li>
+        <li>Запись: {{this.data}}</li>
+        <a href="/admin/patient/delete/{{this._id}}">Удалить</a>|
+        <a href="/admin/edit/{{this._id}}">Редактировать</a>
+        <h2>-----------------</h2>
+        {{/each}}
+    </ul>
+    {{/if}}
+    {{#if noPatients}}
+    <h3>Таких пациентов нет!</h3>
+    {{/if}}
+    {{#if neededPatients}}
+    {{#each neededPatients}}
+    <li>Имя: {{this.name}}</li>
+    <li>Почта: {{this.email}}</li>
+    <li>Телефон: {{this.phone}}</li>
+    <li>Запись: {{this.data}}</li>
+    <a href="/admin/patient/delete/{{this._id}}">Удалить</a>|
+    <a href="/admin/edit/{{this._id}}">Редактировать</a>
+    <h2>-----------------</h2>
+    {{/each}}
+    {{/if}}
+</body>
+</html>

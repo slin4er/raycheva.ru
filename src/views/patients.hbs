@@ -1,0 +1,29 @@
+{{>style}}
+<body>
+    <a href="/">На главную</a> ||
+    <a href="/admin/find/patient">Найти по имени</a><br>
+    <a href="/admin/logout">Выйти</a>
+    {{#if patients}}
+    <ul class='list-group'>
+        {{#each patients}}
+        <li>Имя: {{this.name}}</li>
+        <li>Почта: {{this.email}}</li>
+        <li>Телефон: {{this.phone}}</li>
+        <li>Запись: {{this.data}}</li>
+        <a href="/admin/patient/delete/{{this._id}}">Удалить</a>|
+        <a href="/admin/edit/{{this._id}}">Редактировать</a>
+        <h2>-----------------</h2>
+        {{/each}}
+    </ul>
+    {{/if}}
+    <br>
+    <ul>
+        {{#if noPagesNext}}
+        <li> <a href="/admin/patients/{{nextPage}}">Следующая</a></li>
+        {{/if}}
+        {{#if noPagesPrev}}
+        <li><a href="/admin/patients/{{prevPage}}">Предыдущая</a></li>
+        {{/if}}
+    </ul>
+</body>
+</html>

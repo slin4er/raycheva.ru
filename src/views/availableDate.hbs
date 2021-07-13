@@ -1,0 +1,26 @@
+{{>style}}
+<body>
+    {{#if full}}
+        <h2>Для этого дня все часы заняты!</h2>
+        <form method="GET" action="/">
+            <button>На главную</button>
+        </form>
+    {{else}}
+    {{#if empty}}
+        <h2>Все часы свободны! Смело записывайтесь!</h2>
+        <form method="GET" action="/">
+            <button>На главную</button>
+        </form>
+    {{else}}
+    {{#if patients}}
+    {{#each patients}}
+        {{this}} - Свободно </br>
+    {{/each}}
+        <form method="GET" action="/">
+            <button>На главную</button>
+        </form>
+    {{/if}}
+    {{/if}}
+    {{/if}}
+</body>
+</html>
