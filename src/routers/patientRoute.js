@@ -182,6 +182,9 @@ router.post('/registration', async (req, res) => {
         if(patientExists){
             throw new Error('Такая запись уже сущусвует')
         }
+        if(!req.body.data){
+            throw new Error('Вы не указали дату!')
+        }
         const patient = await new Patient(req.body)
         await patient.save()
         //SendDataToPatient(patient.email, patient.name, patient.data)
