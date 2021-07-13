@@ -15,7 +15,9 @@ router.post('/admin/signup', async (req, res) => {
             res.cookie('auth_token', token)
             res.render('welcoming')
         } catch(e){
-            res.status(400).send(e.message)
+            res.render('error', {
+                error: "Очень плохая идея!"
+            })
         }
     }else{
         const unableLogin = true
