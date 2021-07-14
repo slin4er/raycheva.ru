@@ -10,14 +10,8 @@ const patientSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: true,
         trim: true,
         lowercase: true,
-        validate(value){
-            if(!isEmail(value)){
-                throw new Error('Неправильно введена почта!')
-            }
-        }
     },
     phone: {
         type: String,

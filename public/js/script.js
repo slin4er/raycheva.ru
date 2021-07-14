@@ -1,5 +1,4 @@
 const disabledDate = ['23.07.2021','24.07.2021','25.07.2021','26.07.2021','27.07.2021','28.07.2021','29.07.2021','30.07.2021','31.07.2021','01.08.2021','02.08.2021'];
-
 $('#datetimepicker').datetimepicker({
     format:'d.m.Y H:i',
     allowTimes:[
@@ -11,18 +10,14 @@ $('#datetimepicker').datetimepicker({
     defaultTime: '9:00',
     disabledDates: disabledDate, formatDate:'d.m.Y'
 });
-
 $('#datetimepicker1').datetimepicker({
     format:'d.m.Y',
     timepicker: false,
     minDate: 0,
     disabledDates: disabledDate, formatDate:'d.m.Y'
 });
-
 $.datetimepicker.setLocale('ru');
-
 $(document).ready(function() {
-
     function validateForms(form) {
         $(form).validate({
             rules: {
@@ -31,10 +26,6 @@ $(document).ready(function() {
                     minlength: 4
                 },
                 phone: "required",
-                email: {
-                    required: true,
-                    email: true
-                },
                 check: "required"
             },
             messages: {
@@ -43,20 +34,13 @@ $(document).ready(function() {
                     minlength: jQuery.validator.format("Введите {0} символа!")
                 },
                 phone: "Введите свой номер телефона",
-                email: {
-                    required: "Введите свою почту",
-                    email: "Неправильно введен адрес почты"
-                },
                 check: "Вы не согласились!"
             }
         });
     }
-     
     validateForms('#reg-form');
-
     /* маска ввода , этот плагин не воспринимает type в html*/
     $('input[name=phone]').mask("+373(999)99-999");
-
 });
 
 
