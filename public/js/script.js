@@ -7,6 +7,7 @@ $('#datetimepicker').datetimepicker({
         '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00'
     ],
     minDate: 0,
+    dayOfWeekStart: 1,
     defaultTime: '9:00',
     disabledDates: disabledDate, formatDate:'d.m.Y'
 });
@@ -14,6 +15,7 @@ $('#datetimepicker1').datetimepicker({
     format:'d.m.Y',
     timepicker: false,
     minDate: 0,
+    dayOfWeekStart: 1,
     disabledDates: disabledDate, formatDate:'d.m.Y'
 });
 $.datetimepicker.setLocale('ru');
