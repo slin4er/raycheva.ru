@@ -1,5 +1,8 @@
 {{>style}}
 <body>
+    {{#if error}}
+        <h2>{{error}}</h2>
+    {{/if}}
     {{#if full}}
         <h2>Для этого дня все часы заняты!</h2>
         <form method="GET" action="/">
@@ -13,6 +16,7 @@
         </form>
     {{else}}
     {{#if patients}}
+        <h2>Вот свободные часы на {{data}}</h2>
     {{#each patients}}
         {{this}} - Свободно </br>
     {{/each}}

@@ -180,7 +180,33 @@ router.post('/registration', async (req, res) => {
     try{
         const patientExists = await Patient.findOne({data: req.body.data})
         if(patientExists){
-            throw new Error('Такая запись уже сущусвует')
+            const error = 'Такая запись уже сущусвует'
+            const patients = await Patient.find({})
+            let availableHours = ['09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00']
+            const busyDate = []
+            await patients.forEach(element => {
+                if(element.data.includes(req.body.data.split(' ')[0])){
+                    busyDate.push(element.data.slice(-5))
+                }
+            });
+            busyDate.sort()
+
+            await busyDate.forEach(element => {
+                availableHours = availableHours.filter((hour) => hour !== element)
+            })
+
+            let full = false
+            if(availableHours.length === 0) {
+                full = true
+            }
+            if(patients){
+                return res.render('availableDate',{
+                    error,
+                    full,
+                    patients: availableHours,
+                    data: req.body.data.split(' ')[0]
+                })
+            }
         }
         if(!req.body.data){
             throw new Error('Вы не указали дату!')
@@ -198,46 +224,6 @@ router.post('/registration', async (req, res) => {
     }
 })
 
-router.get('/dates/check', async (req, res) => {
-    try{
-        if(!req.query.data){
-            throw new Error('Вы не указали дату,которую хотели бы проверить!')
-        }
-        const patients = await Patient.find({})
-        let availableHours = ['09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00']
-        const busyDate = []
-        await patients.forEach(element => {
-            if(element.data.includes(req.query.data)){
-                busyDate.push(element.data.slice(-5))
-            }
-        });
-        busyDate.sort()
-
-        await busyDate.forEach(element => {
-            availableHours = availableHours.filter((hour) => hour !== element)
-        })
-
-        let empty = false
-        let full = false
-        if(availableHours.length === 0) {
-            full = true
-        }
-        if(availableHours.length === 17){
-            empty = true
-        }
-        if(patients){
-            res.render('availableDate',{
-                empty,
-                full,
-                patients: availableHours
-            })
-        }
-    }catch (e) {
-        res.render('error', {
-            error: e.message
-        })
-    }
-})
 router.get('/*', (req, res) => {
     res.render('error', {
         error: 'Такой страницы не существует'

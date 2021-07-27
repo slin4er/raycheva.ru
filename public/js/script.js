@@ -11,13 +11,6 @@ $('#datetimepicker').datetimepicker({
     defaultTime: '9:00',
     disabledDates: disabledDate, formatDate:'d.m.Y'
 });
-$('#datetimepicker1').datetimepicker({
-    format:'d.m.Y',
-    timepicker: false,
-    minDate: 0,
-    dayOfWeekStart: 1,
-    disabledDates: disabledDate, formatDate:'d.m.Y'
-});
 $.datetimepicker.setLocale('ru');
 $(document).ready(function() {
     function validateForms(form) {
