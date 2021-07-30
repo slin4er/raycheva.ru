@@ -144,7 +144,7 @@ router.get('/admin/edit/:id', auth, async (req, res) => {
     }
 })
 
-router.get('/admin/find/patient', (req, res) => {
+router.get('/admin/find/patient', auth, (req, res) => {
     res.render('patient')
 })
 
