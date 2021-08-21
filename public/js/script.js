@@ -1,4 +1,4 @@
-const disabledDate = ['10.08.2021'];
+const disabledDate = ['01.09.2021', '02.09.2021', '03.09.2021', '04.09.2021', '05.09.2021', '06.09.2021', '07.09.2021', '08.09.2021', '09.09.2021', '10.09.2021'];
 $('#datetimepicker').datetimepicker({
     format:'d.m.Y H:i',
     allowTimes:[
