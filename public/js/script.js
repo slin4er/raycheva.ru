@@ -18,7 +18,8 @@ $(document).ready(function() {
             rules: {
                 name: {
                     required: true,
-                    minlength: 4
+                    minlength: 4,
+                    trim: true
                 },
                 phone: "required",
                 check: "required"
