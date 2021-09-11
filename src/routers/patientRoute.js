@@ -182,7 +182,7 @@ router.post('/registration', async (req, res) => {
         if(patientExists){
             const error = 'Такая запись уже существует!'
             const patients = await Patient.find({})
-            let availableHours = ['09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00']
+            let availableHours = ['09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00']
             const busyDate = []
             await patients.forEach(element => {
                 if(element.data.includes(req.body.data.split(' ')[0])){
