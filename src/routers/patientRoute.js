@@ -16,7 +16,7 @@ router.post('/admin/signup', async (req, res) => {
             res.render('welcoming')
         } catch(e){
             res.render('error', {
-                error: "Очень плохая идея!"
+                error: "Очень плохая мысль!"
             })
         }
     }else{
