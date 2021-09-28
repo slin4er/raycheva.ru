@@ -84,6 +84,15 @@
                             href="/policy.html">политикой конфиденциальности</a></span></div><button
                     class="preview__btn button button_submit">Записаться на прием</button>
             </form>
+            <div class="container">
+                <br><div id="title" class="reg__title title title_fz36">Ваши Записи</div>
+                <div class="reg__devider devider"></div>
+                <form method="GET" class="reg-form" id="reg-form" action="/pateint/appointment">
+                    <label id="name-error" class="error" for="phone"></label> 
+                    <input class="reg-form__input" name="phone" placeholder="Телефон, указанный при записи">
+                    <button class="preview__btn button button_submit">Проверить</button>
+                </form>
+            </div>
         </div>
     </section>
     <footer class="footer">

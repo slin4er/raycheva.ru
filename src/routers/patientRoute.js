@@ -166,7 +166,6 @@ router.get('/admin/patient/delete/:id', auth, async (req, res) => {
         }
         await patient.remove()
         res.redirect(req.get('referer'))
-        //res.redirect('/admin/patients')
     }catch (e) {
         res.status(500).send(e.message)
     }
@@ -174,6 +173,37 @@ router.get('/admin/patient/delete/:id', auth, async (req, res) => {
 
 router.get('/', (req, res) => {
     res.render('index.html')
+})
+
+router.get('/pateint/appointment', async (req ,res) => {
+    try {
+        const patients = await Patient.find({phone: req.query.phone})
+        if(patients.length === 0) {
+            throw new Error('Записей на этот номер оформлено не было!')
+        }
+        res.render('patientAppointments', {
+            patient: patients
+        })
+    } catch (e) {
+        res.render('error', {
+            error: e.message
+        })
+    }
+})
+
+router.post('/patient/delete/appointment/:id', async (req, res) => {
+    try{
+        const patient = await Patient.findById(req.params.id)
+        if(!patient) {
+            throw new Error('Такой записи не существует!')
+        }
+        await patient.remove()
+        res.redirect(req.get('referer'))
+    }catch (e) {
+        res.render('error', {
+            error: e.message
+        })
+    }
 })
 
 router.post('/registration', async (req, res) => {

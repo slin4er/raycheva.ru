@@ -1,0 +1,24 @@
+{{>style}}
+<body>
+    <h2>Ваши записи:</h2><br>
+    {{#if patient}}
+    <ul class='list-group'>
+        {{#each patient}}
+        <li><h3>{{this.data}}</h3></li>
+        <form method="POST" action="/patient/delete/appointment/{{this._id}}">
+            <button id=buttonDel>Удалить</button>
+        </form><br>
+        {{/each}}
+    </ul>
+    {{/if}}
+    <h2>Учитывая условия пандемии COVID 19,</h2>
+    <h2>При себе обязательно иметь маску,бахилы</h2>
+    <h2>И по возможности пеленку,перчатки</h2>
+    <h2>Или гинекологический набор!</h2>
+    <h2>Не забудьте сделать снимок экрана,</h2>
+    <h2>Чтобы не забыть о своей записи</h2>
+    <form method="GET" action="/">
+        <button>На главную</button>
+    </form>
+</body>
+</html>
