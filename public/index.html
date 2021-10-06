@@ -72,24 +72,50 @@
         <div class="container">
             <div id="title" class="reg__title title title_fz36">Записаться на прием</div>
             <div class="reg__devider devider"></div>
-            <form method="POST" class="reg-form" id="reg-form" action="/registration"><label id="name-error"
-                    class="error" for="name"></label> <input class="reg-form__input" name="name" placeholder="Имя и Фамилия"
-                    type="text"> <label id="name-error" class="error" for="phone"></label> <input
-                    class="reg-form__input" name="phone" placeholder="Телефон"> <input class="reg-form__input"
-                    name="email" placeholder="E-mail, не обязательно" type="email"> <input readonly
-                    class="reg-form__input" name="data" placeholder="Выберите дату и время" type="text"
-                    id="datetimepicker" autocomplete="off">
-                <div class="reg__policy"><label id="check-error" class="error" for="check"></label><br><input
-                        name="check" class="checkbox" type="checkbox"> <span>Я согласен(а) с <a
-                            href="/policy.html">политикой конфиденциальности</a></span></div><button
-                    class="preview__btn button button_submit">Записаться на прием</button>
+            <form method="POST" class="reg-form" id="reg-form" action="/registration">
+                <label id="name-error" class="error" for="name"></label>
+                <input class="reg-form__input" name="name" placeholder="Имя и Фамилия"type="text"> 
+                <label id="name-error" class="error" for="phone"></label> 
+                <input class="reg-form__input" name="phone" placeholder="Телефон +373(777)77-777"> 
+                <input class="reg-form__input" name="email" placeholder="E-mail, не обязательно" type="email"> 
+                <input readonly class="reg-form__input" name="data" placeholder="Выберите дату и время" type="text"id="datetimepicker" autocomplete="off">
+                <div class="reg__policy">
+                    <label id="check-error" class="error" for="check"></label><br>
+                    <input name="check" class="checkbox" type="checkbox"> 
+                    <span>Я согласен(а) с <a href="/policy.html">политикой конфиденциальности</a></span>
+                </div>
+                <button class="preview__btn button button_submit">Записаться на прием</button>
             </form>
+            <!-- <section class="reg">
+                <div class="container">
+                    <div id="title" class="regtitle title title_fz36">Записаться на прием</div>
+                    <div class="regdevider devider"></div>
+                    <form method="GET" class="reg-form-top" id="reg-form-top" action="/dates/check">
+                        <input class="reg-form-topinput" name="data" placeholder="Выберите дату" type="text" id="datetimepicker1" autocomplete="off">
+                        <button class="previewbtn button button_submit button_val" data-modal="reg">Свободные часы</button>
+                    </form>
+                    <form method="POST" class="reg-form" id="reg-form" action="/registration">
+                        <label id="name-error" class="error" for="name"></label>
+                        <input class="reg-forminput" name="name" placeholder="Ваше Имя" type="text">
+                        <label id="name-error" class="error" for="phone"></label>
+                        <input class="reg-forminput" name="phone" placeholder="Ваш телефон">
+                        <input class="reg-forminput" name="email" placeholder="Ваш E-mail, не обязательно" type="email">
+                        <input class="reg-forminput" name="data" placeholder="Выберите дату и время" type="text" id="datetimepicker" autocomplete="off">
+                        <div class="regpolicy">
+                            <label id="check-error" class="error" for="check"></label></br>
+                            <input name="check" class="checkbox" type="checkbox">
+                            <span>Я согласен(а) с <a href="/policy.html">политикой конфиденциальности</a></span>
+                        </div>
+                        <button class="previewbtn button button_submit">Записаться на прием</button>
+                    </form>
+                </div>
+            </section> -->
             <div class="container">
                 <br><div id="title" class="reg__title title title_fz36">Проверить свою запись</div>
                 <div class="reg__devider devider"></div>
-                <form method="GET" class="reg-form" id="reg-form" action="/pateint/appointment">
-                    <label id="name-error" class="error" for="phone"></label> 
-                    <input class="reg-form__input" name="phone" placeholder="Телефон, указанный при записи">
+                <form method="GET" class="reg-form" id="reg-form1" action="/pateint/appointment">
+                    <label id="name-error" class="error" for="phoneCheck"></label> 
+                    <input class="reg-form__input" name="phoneCheck" placeholder="Телефон, указанный при записи">
                     <button class="preview__btn button button_submit">Проверить</button>
                 </form>
             </div>

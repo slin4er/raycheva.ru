@@ -19,11 +19,11 @@ $(document).ready(function() {
             rules: {
                 name: {
                     required: true,
-                    minlength: 4,
-                    trim: true
+                    minlength: 4
                 },
                 phone: "required",
-                check: "required"
+                check: "required",
+                phoneCheck: "required"
             },
             messages: {
                 name: {
@@ -31,13 +31,14 @@ $(document).ready(function() {
                     minlength: jQuery.validator.format("Введите {0} символа!")
                 },
                 phone: "Введите свой номер телефона",
-                check: "Вы не согласились!"
+                check: "Вы не согласились!",
+                phoneCheck: "Введите свой номер телефона"
             }
         });
     }
     validateForms('#reg-form');
     /* маска ввода , этот плагин не воспринимает type в html*/
-    $('input[name=phone]').mask("+373(999)99-999");
+    // $('input[name=phone]').mask("+373(999)99-999");
 });
 
 

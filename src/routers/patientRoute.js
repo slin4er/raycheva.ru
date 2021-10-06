@@ -177,7 +177,7 @@ router.get('/', (req, res) => {
 
 router.get('/pateint/appointment', async (req ,res) => {
     try {
-        const patients = await Patient.find({phone: req.query.phone})
+        const patients = await Patient.find({phone: req.query.phoneCheck})
         if(patients.length === 0) {
             throw new Error('Записей на этот номер оформлено не было!')
         }
@@ -241,6 +241,10 @@ router.post('/registration', async (req, res) => {
         if(!req.body.data){
             throw new Error('Вы не указали дату!')
         }
+
+        if(!req.body.data && !req.body.phone) throw new Error('Вы не указали телефон и дату!')
+
+        if(!req.body.phone) throw new Error('Вы не указали телефон!')
         const patient = await new Patient(req.body)
         await patient.save()
         //SendDataToPatient(patient.email, patient.name, patient.data)
