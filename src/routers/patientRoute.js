@@ -60,7 +60,7 @@ router.get('/admin/logout', auth, async (req, res) => {
 
 router.post('/admin/patients/delete/oldPatients', auth, async (req, res) => {
     try {
-        const patients = await Patient.find({})
+        const patients = await Patient.find()
         const today = new Date().toLocaleDateString().split('.')
         await patients.map(async (patient) => {
             const patientData = patient.data.split(' ')[0].split('.')
