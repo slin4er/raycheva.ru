@@ -67,7 +67,7 @@ router.post('/admin/patients/delete/oldPatients', auth, async (req, res) => {
             if((patientData[0] < today[0] && patientData[1] <= today[1] && patientData[2] <= today[2])
                 || (patientData[1] < today[1])
                 || (patientData[2] < today[2])
-            ) return await Patient.deleteOne(patient)
+            ) return await Patient.findByIdAndDelete(patient.id)
         })
         res.redirect(req.get('referer'))
     } catch (e) {
