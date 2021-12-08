@@ -62,7 +62,7 @@ router.post('/admin/patients/delete/oldPatients', auth, async (req, res) => {
     try {
         const patients = await Patient.find({})
         const today = new Date().toLocaleDateString().split('.')
-        patients.map(async (patient) => {
+        await patients.map(async (patient) => {
             const patientData = patient.data.split(' ')[0].split('.')
             if((patientData[0] < today[0] && patientData[1] <= today[1] && patientData[2] <= today[2])
                 || (patientData[1] < today[1])
