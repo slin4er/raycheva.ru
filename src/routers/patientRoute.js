@@ -46,7 +46,7 @@ router.post('/admin/login', async (req, res) => {
 
 router.get('/admin/logout', auth, async (req, res) => {
     try{
-        req.admin.tokens = req.admin.tokens.filter((token) => token.token !== req.token)
+        req.admin.tokens = req.admin.tokens = []
         await req.admin.save()
         res.render('error', {
             error: 'Вы успешно вышли из сети!'
@@ -55,6 +55,23 @@ router.get('/admin/logout', auth, async (req, res) => {
         res.render('error', {
             error: e.message
         })
+    }
+})
+
+router.post('/admin/patients/delete/oldPatients', auth, async (req, res) => {
+    try {
+        const patients = await Patient.find({})
+        const today = new Date().toLocaleDateString().split('.')
+        patients.map(async (patient) => {
+            const patientData = patient.data.split(' ')[0].split('.')
+            if((patientData[0] < today[0] && patientData[1] <= today[1] && patientData[2] <= today[2])
+                || (patientData[1] < today[1])
+                || (patientData[2] < today[2])
+            ) return await Patient.deleteOne(patient)
+        })
+        res.redirect(req.get('referer'))
+    } catch (e) {
+        res.status(500).send(e.message)
     }
 })
 
@@ -234,7 +251,7 @@ router.post('/registration', async (req, res) => {
                     error,
                     full,
                     patients: availableHours,
-                    data: req.body.data.split(' ')[0]
+                    data: req.body.data.split(' ')[0],
                 })
             }
         }
