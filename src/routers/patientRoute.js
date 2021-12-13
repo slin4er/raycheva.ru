@@ -260,20 +260,18 @@ router.post('/registration', async (req, res) => {
 
 router.post('/admin/patients/delete/oldPatients', auth, async (req, res) => {
     try {
-        const mySort = {data: 1}
-        const patients = await Patient.find({}).sort(mySort)
-        // if(!patients) throw new Error('Нет пациентов')
-        // const today = new Date().toLocaleDateString().split('.')
-        // patients.map(async (patient) => {
-        //     const patientData = patient.data.split(' ')[0].split('.')
-        //     if((patientData[0] < today[0] && patientData[1] <= today[1] && patientData[2] <= today[2])
-        //         || (patientData[1] < today[1])
-        //         || (patientData[2] < today[2])
-        //     ) {
-        //         return await Patient.deleteOne(patient)
-        //     }
-        // })
-        await Patient.deleteOne(patients[0])
+        const patients = await Patient.find()
+        if(!patients) throw new Error('Нет пациентов')
+        const today = new Date().toLocaleDateString().split('.')
+        patients.forEach(async (patient) => {
+            const patientData = patient.data.split(' ')[0].split('.')
+            if((patientData[0] < today[0] && patientData[1] <= today[1] && patientData[2] <= today[2])
+                || (patientData[1] < today[1])
+                || (patientData[2] < today[2])
+            ) {
+                return await Patient.deleteOne(patient)
+            }
+        })
         res.redirect(req.get('referer'))
     } catch (e) {
         res.status(500).send(e.message)
