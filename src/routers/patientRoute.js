@@ -271,6 +271,7 @@ router.post('/admin/patients/delete/oldPatients', auth, async (req, res) => {
                 await patient.save()
             }
         })
+        await Patient.deleteMany({date: 1})
         res.redirect(req.get('referer'))
     } catch (e) {
         res.status(500).send(e.message)
