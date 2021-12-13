@@ -67,13 +67,11 @@ router.post('/admin/patients/delete/oldPatients', auth, async (req, res) => {
         const today = new Date().toLocaleDateString().split('.')
         patients.map(async (patient) => {
             const patientData = patient.data.split(' ')[0].split('.')
-            console.log('16' > '15')
             if((patientData[0] < today[0] && patientData[1] <= today[1] && patientData[2] <= today[2])
                 || (patientData[1] < today[1])
                 || (patientData[2] < today[2])
             ) {
-                const patientToDelete = await Patient.findById(patient.id)
-                return await patientToDelete.remove()
+                return await Patient.findByIdAndRemove(patient.id)
             }
         })
         res.redirect(req.get('referer'))
