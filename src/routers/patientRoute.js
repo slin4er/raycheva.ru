@@ -60,14 +60,21 @@ router.get('/admin/logout', auth, async (req, res) => {
 
 router.post('/admin/patients/delete/oldPatients', auth, async (req, res) => {
     try {
+        console.log('hey')
         const patients = await Patient.find()
+        console.log(patients)
+        if(!patients) throw new Error('Нет пациентов')
         const today = new Date().toLocaleDateString().split('.')
-        await patients.map(async (patient) => {
+        patients.map(async (patient) => {
             const patientData = patient.data.split(' ')[0].split('.')
+            console.log('16' > '15')
             if((patientData[0] < today[0] && patientData[1] <= today[1] && patientData[2] <= today[2])
                 || (patientData[1] < today[1])
                 || (patientData[2] < today[2])
-            ) return await Patient.findByIdAndDelete(patient.id)
+            ) {
+                const patientToDelete = await Patient.findById(patient.id)
+                return await patientToDelete.remove()
+            }
         })
         res.redirect(req.get('referer'))
     } catch (e) {
