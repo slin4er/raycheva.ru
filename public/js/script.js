@@ -1,4 +1,4 @@
-const disabledDate = ['12.09.2021'];
+const disabledDate = ['13.01.2022'];
 $('#datetimepicker').datetimepicker({
     disabledWeekDays: [0],
     format:'d.m.Y H:i',
