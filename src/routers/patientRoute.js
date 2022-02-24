@@ -260,17 +260,14 @@ router.post('/registration', async (req, res) => {
 
 router.post('/admin/patients/delete/oldPatients', auth, async (req, res) => {
     try {
-        const patients = await Patient.find()
+        const patients = await Patient.find({})
         const rightFormat = new Date().toLocaleDateString().split('.')
         const today = Date.parse(new Date(`${+rightFormat[2]}, ${+rightFormat[1]}, ${+rightFormat[0] + 1}`))
-        // patients.forEach(async (patient) => {
-        //     const patientData = patient.data.split(' ')[0].split('.')
-        //     const patientDataMS =  Date.parse(new Date(`${+patientData[2]}, ${+patientData[1]}, ${+patientData[0] + 1}`))
-        //     if(today > patientDataMS) return await patient.remove()
-        // })
+        
         for (const patient of patients) {
             const patientData = patient.data.split(' ')[0].split('.')
             const patientDataMS =  Date.parse(new Date(`${+patientData[2]}, ${+patientData[1]}, ${+patientData[0] + 1}`))
+            console.log(patientData)
             if(today > patientDataMS) await patient.remove()
         }
         res.redirect(req.get('referer'))
