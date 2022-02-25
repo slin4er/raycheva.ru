@@ -3,9 +3,10 @@
     <a href="/">На главную</a> ||
     <a href="/admin/find/patient">Найти по имени</a> ||
     <a href="/admin/logout">Выйти</a>
-    <form method="POST" action="/admin/patients/delete/oldPatients">
+    {{!-- <form method="POST" action="/admin/patients/delete/oldPatients">
         <button>Удалить старых пациентов</button>
-    </form></br>
+    </form> --}}
+    </br>
     {{#if patients}}
     <ul class='list-group'>
         {{#each patients}}

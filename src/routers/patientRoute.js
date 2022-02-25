@@ -258,26 +258,25 @@ router.post('/registration', async (req, res) => {
     }
 })
 
-router.post('/admin/patients/delete/oldPatients', auth, async (req, res) => {
-    try {
-        const patients = await Patient.find({})
-        const today = new Date().toLocaleDateString().split('.')
+// router.post('/admin/patients/delete/oldPatients', auth, async (req, res) => {
+//     try {
+//         const patients = await Patient.find({})
+//         const today = (new Date().toLocaleDateString().split('.'))
         
-        for (const patient of patients) {
-            const patientData = patient.data.split(' ')[0].split('.')
-            console.log(patientData)
+//         for (const patient of patients) {
+//             const patientData = patient.data.split(' ')[0].split('.')
 
-            if(today[2] >= patientData[2] 
-                && today[1] >= patientData[1] 
-                && today[0] > patientData[0] 
-                || today[2] > patientData[2]
-                || today[1] > patientData[1]){ await patient.remove() }
-        }
-        res.redirect(req.get('referer'))
-    } catch (e) {
-        res.status(500).send(e.message)
-    }
-})
+//             if(today[2] >= patientData[2] 
+//                 && today[1] >= patientData[1] 
+//                 && today[0] > patientData[0] 
+//                 || today[2] > patientData[2]
+//                 || today[1] > patientData[1]){ await patient.remove() }
+//         }
+//         res.redirect(req.get('referer'))
+//     } catch (e) {
+//         res.status(500).send(e.message)
+//     }
+// })
 
 router.get('/*', (req, res) => {
     res.render('error', {
